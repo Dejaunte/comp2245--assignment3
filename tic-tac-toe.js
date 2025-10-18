@@ -34,5 +34,23 @@ document.addEventListener("DOMContentLoaded", function() {
                 currentPlayer = currentPlayer === "X" ? "O" : "X";
             }
         });
+    
+    // Mouse Over checker
+        square.addEventListener("mouseover", function() {
+            if (gameActiveState[index] === "") {
+                square.classList.add("hover");
+
+                square.classList.add(currentPlayer);
+            }
+        });
+
+    // Mouse Out checker
+        square.addEventListener("mouseout", function() {
+            square.classList.remove("hover");
+            if (gameActiveState[index] === "") {
+                square.classList.remove("X");
+                square.classList.remove("O");
+            }
+        });
     });
 });
