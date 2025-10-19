@@ -20,19 +20,66 @@ document.addEventListener("DOMContentLoaded", function() {
 // set game state
     let gameActiveState = ["", "", "", "", "", "", "", "", ""];
 
+    let gameActive = true;
+
+// Winning conditions
+    const winningConditions = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6]
+    ];
+    // Function to check for winner
+    function checkWinner() {
+        for (let i = 0; i < winningConditions.length; i++) {
+            const [a, b, c] = winningConditions[i];
+            if (gameActiveState[a] && gameActiveState[a] === gameActiveState[b] && gameActiveState[a] === gameActiveState[c]) {
+                return gameActiveState[a];
+            }
+        }
+
+    // Check for tie
+        if (!gameActiveState.includes("")) {
+            return "Tie";
+        }
+
+        return null;
+    }
+
+    //player move
+    function playerMove(square, index) {
+        if (gameActiveState[index] === "" && gameActive) {
+            gameActiveState[index] = currentPlayer;
+            square.textContent = currentPlayer;
+            square.classList.add(currentPlayer);
+
+            const winner = checkWinner();
+            if (winner) {
+                gameActive = false;
+                if (winner === "Tie") {     
+                    gameStatus.textContent("Congratulations It's a tie!");
+                } 
+                else {
+                    gameStatus.textContent = ("Conratulations! Player " + winner + " wins!");
+                    gameStatus.classList.add("you-won");
+                }
+            } 
+            else {
+                currentPlayer = currentPlayer === "X" ? "O" : "X";
+                gameStatus.textContent =( "Player " + currentPlayer + "'s turn");
+            }
+        
+        }
+    }
+
 // Add click event listener to each square
     squares.forEach((square, index) => {
         square.addEventListener("click", function() {
-            // click if square is empty
-                if (gameActiveState[index] === "") {
-            // update game state
-                gameActiveState[index] = currentPlayer;
-            // display current player symbol
-                square.innerText = currentPlayer;
-                square.classList.add(currentPlayer);
-            // switch player
-                currentPlayer = currentPlayer === "X" ? "O" : "X";
-            }
+            playerMove(square, index);
         });
     
     // Mouse Over checker
