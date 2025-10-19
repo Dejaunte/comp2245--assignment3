@@ -8,6 +8,11 @@ document.addEventListener("DOMContentLoaded", function() {
     // get Squares
     const squares = board.querySelectorAll("div");
 
+    // game status element
+    const gameStatus = document.getElementById("status");
+
+    const newGameButton = document.getElementById(".btn");
+
     // add squares
     squares.forEach(square => {
         square.classList.add("square");
@@ -48,6 +53,23 @@ document.addEventListener("DOMContentLoaded", function() {
         }
 
         return null;
+    }
+    //reset game
+    function resetGame() {
+        currentPlayer = "X";
+        gameActiveState = ["", "", "", "", "", "", "", "", ""];
+        gameActive = true;
+
+        
+        squares.forEach(square => {
+            square.textContent = "";
+            square.classList.remove("X");
+            square.classList.remove("O");
+        });
+
+        gameStatus.textContent = ("Player " + currentPlayer + "'s turn");
+        gameStatus.classList.remove("you-won");
+
     }
 
     //player move
@@ -100,4 +122,6 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         });
     });
+    // New Game button event listener
+    newGameButton.addEventListener("click", resetGame);
 });
